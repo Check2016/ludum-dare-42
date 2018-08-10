@@ -1,1 +1,1 @@
-# ludum-dare-42
+# Ludum Dare 42
