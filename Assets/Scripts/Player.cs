@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     private const int MaxHealth = 100;
 
+    public SpecialCamera specialCamera;
     public PlayerUI playerUI;
 
     [Space]

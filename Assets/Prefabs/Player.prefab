@@ -493,7 +493,7 @@ MonoBehaviour:
   SwayAmount: 0.01
   SwaySpeed: 10
   CameraVisorRT: {fileID: 8400000, guid: 3cdb3ed0929694e43a15df3a1ee7fbbb, type: 2}
-  CameraFreezeCone: 0.15
+  CameraSightCone: 0.15
   MaxPauseDistance: 1000
   animator: {fileID: 0}
 --- !u!114 &114587671553714896
@@ -822,6 +822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56813431ce3946d4c906001ed79b1b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  specialCamera: {fileID: 114548670473256596}
   playerUI: {fileID: 0}
   HealthBarColorGradient:
     serializedVersion: 2

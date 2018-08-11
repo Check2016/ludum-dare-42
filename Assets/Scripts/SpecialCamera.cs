@@ -7,6 +7,9 @@ using TMPro;
 
 public class SpecialCamera : MonoBehaviour
 {
+    private const float CrystalReleaseDistance = 1;
+    private const float CrystalReleaseForce = 10;
+
     public Player player;
     public Camera FPSCamera;
     public float SwayAmount = 1;
@@ -93,6 +96,19 @@ public class SpecialCamera : MonoBehaviour
 
     private void TakePicture( PictureTypes pictureType )
     {
+        bool hasFreeSlot = false;
+
+        for ( int i = 0; i < pictures.Length; i++ )
+        {
+            if ( pictures[i] == null )
+            {
+                hasFreeSlot = true;
+                break;
+            }
+        }
+
+        if ( hasFreeSlot == false ) return;
+
         RenderTexture currentRT = RenderTexture.active;
         RenderTexture.active = CameraVisorRT;
 
@@ -107,7 +123,7 @@ public class SpecialCamera : MonoBehaviour
 
         Picture picture = new Picture( texture2D, pictureType );
 
-        switch( pictureType )
+        switch ( pictureType )
         {
             case PictureTypes.Freeze:
                 {
@@ -123,28 +139,47 @@ public class SpecialCamera : MonoBehaviour
                         }
                     }
 
-                    picture.frozenEnemies = frozenEnemies.ToArray();
+                    if ( frozenEnemies.Count > 0 )
+                    {
+                        picture.frozenEnemies = frozenEnemies.ToArray();
+                    }
+                    else
+                    {
+                        picture.type = PictureTypes.None;
+                    }
                 }
                 break;
 
             case PictureTypes.Capture:
                 {
-                    List<GameObject> capturedGameObjects = new List<GameObject>();
+                    GameObject capturedGameObject = null;
+                    float smallestDistance = 0;
 
                     for ( int i = 0; i < LevelManager.instance.Crystals.Length; i++ )
                     {
-                        if ( LevelManager.instance.Crystals[i].gameObject.activeSelf == false ) return;
-
-                        Debug.Log( IsInSightOfCamera( LevelManager.instance.Crystals[i].transform, "Crystal" ) );
+                        if ( LevelManager.instance.Crystals[i].gameObject.activeSelf == false ) continue;
 
                         if ( IsInSightOfCamera( LevelManager.instance.Crystals[i].transform, "Crystal" ) )
                         {
-                            capturedGameObjects.Add( LevelManager.instance.Crystals[i].gameObject );
-                            LevelManager.instance.Crystals[i].gameObject.SetActive( false );
+                            float distance = Vector3.Distance( LevelManager.instance.Crystals[i].transform.position, player.transform.position );
+
+                            if ( capturedGameObject == null || distance < smallestDistance )
+                            {
+                                capturedGameObject = LevelManager.instance.Crystals[i].gameObject;
+                                smallestDistance = distance;
+                            }
                         }
                     }
 
-                    picture.capturedGameObjects = capturedGameObjects.ToArray();
+                    if ( capturedGameObject != null )
+                    {
+                        capturedGameObject.SetActive( false );
+                        picture.capturedGameObject = capturedGameObject;
+                    }
+                    else
+                    {
+                        picture.type = PictureTypes.None;
+                    }
                 }
                 break;
         }
@@ -181,22 +216,18 @@ public class SpecialCamera : MonoBehaviour
 
     private void DeletePicture()
     {
+        if ( pictures[pictureSelection] == null ) return;
+
         PictureTypes pictureType = pictures[pictureSelection].type;
 
         if ( pictureType == PictureTypes.Capture )
         {
-            /*for ( int i = 0; i < pictures[pictureSelection].capturedGameObjects.Length; i++ )
+            if ( pictures[pictureSelection].capturedGameObject.CompareTag( "Crystal" ) )
             {
-                if ( pictures[pictureSelection].capturedGameObjects[i].CompareTag( "Crystal" ) )
-                {
-                    RaycastHit hit;
-
-                    if ( Physics.Raycast( FPSCamera.transform.position, FPSCamera.transform.parent.forward, out hit, 100 ) )
-                    {
-
-                    }
-                }
-            }*/
+                pictures[pictureSelection].capturedGameObject.transform.position = player.transform.position + player.transform.forward * CrystalReleaseDistance;
+                pictures[pictureSelection].capturedGameObject.SetActive( true );
+                pictures[pictureSelection].capturedGameObject.GetComponent<Rigidbody>().AddForce( player.transform.forward * CrystalReleaseForce, ForceMode.Impulse );
+            }
         }
 
         pictures[pictureSelection] = null;
@@ -253,7 +284,11 @@ public class SpecialCamera : MonoBehaviour
             if ( pictures[i] != null )
             {
                 playerUI.PictureSlots[i].texture = pictures[i].texture;
-                playerUI.PictureTypeTexts[i].text = pictures[i].type.ToString();
+
+                if ( pictures[i].type != PictureTypes.None )
+                    playerUI.PictureTypeTexts[i].text = pictures[i].type.ToString();
+                else
+                    playerUI.PictureTypeTexts[i].text = "";
             }
             else
             {

@@ -8,7 +8,7 @@ public class Picture {
     public PictureTypes type;
 
     public Enemy[] frozenEnemies;
-    public GameObject[] capturedGameObjects;
+    public GameObject capturedGameObject;
 
     public Picture( Texture2D texture2D, PictureTypes pictureType )
     {
@@ -19,6 +19,7 @@ public class Picture {
 
 public enum PictureTypes
 {
+    None,
     Freeze,
     Capture
 }
