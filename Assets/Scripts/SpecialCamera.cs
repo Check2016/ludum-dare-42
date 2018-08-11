@@ -7,7 +7,7 @@ using TMPro;
 
 public class SpecialCamera : MonoBehaviour
 {
-
+    public Player player;
     public Camera FPSCamera;
     public float SwayAmount = 1;
     public float SwaySpeed = 1;
@@ -16,52 +16,45 @@ public class SpecialCamera : MonoBehaviour
     public RenderTexture CameraVisorRT;
 
     [Space]
-    public float CameraPauseCone = 0.1f;
+    public float CameraSightCone = 0.15f;
     public float MaxPauseDistance = 1000;
-
-    public RawImage[] PictureSlots;
-    public TextMeshProUGUI[] PictureTypeTexts;
-    public RectTransform SelectionOutline;
-    public TextMeshProUGUI CameraModeText;
 
     public Animator animator;
 
     private Vector3 startPosition;
 
+    private PlayerUI playerUI;
+
     private Picture[] pictures;
     private int pictureSelection = 0;
-    private PictureTypes cameraMode;
 
     private void Start()
     {
         startPosition = transform.localPosition;
 
-        pictures = new Picture[PictureSlots.Length];
+        playerUI = player.playerUI;
+
+        pictures = new Picture[playerUI.PictureSlots.Length];
 
         UpdateSelectionOutline();
-        UpdateCameraModeText();
+        UpdatePictureSlots();
     }
 
     private void Update()
     {
         if ( Input.GetMouseButtonDown( 0 ) )
         {
-            TakePicture();
+            TakePicture( PictureTypes.Freeze );
+        }
+
+        if ( Input.GetMouseButtonDown( 1 ) )
+        {
+            TakePicture( PictureTypes.Capture );
         }
 
         if ( Input.GetMouseButtonDown( 2 ) )
         {
             DeletePicture();
-        }
-
-        if ( Input.GetKeyDown( KeyCode.Alpha1 ) )
-        {
-            SwitchCameraMode( PictureTypes.Freeze );
-        }
-
-        if ( Input.GetKeyDown( KeyCode.Alpha2 ) )
-        {
-            SwitchCameraMode( PictureTypes.Capture );
         }
 
         if ( Input.GetAxis( "Mouse ScrollWheel" ) != 0 )
@@ -77,9 +70,9 @@ public class SpecialCamera : MonoBehaviour
 
             if ( pictureSelection < 0 )
             {
-                pictureSelection = PictureSlots.Length - 1;
+                pictureSelection = playerUI.PictureSlots.Length - 1;
             }
-            else if ( pictureSelection >= PictureSlots.Length )
+            else if ( pictureSelection >= playerUI.PictureSlots.Length )
             {
                 pictureSelection = 0;
             }
@@ -98,7 +91,7 @@ public class SpecialCamera : MonoBehaviour
         transform.localPosition = Vector3.Lerp( transform.localPosition, startPosition, Time.deltaTime * SwaySpeed );
     }
 
-    private void TakePicture()
+    private void TakePicture( PictureTypes pictureType )
     {
         RenderTexture currentRT = RenderTexture.active;
         RenderTexture.active = CameraVisorRT;
@@ -112,38 +105,51 @@ public class SpecialCamera : MonoBehaviour
 
         RenderTexture.active = currentRT;
 
-        Picture picture = new Picture( texture2D, cameraMode );
+        Picture picture = new Picture( texture2D, pictureType );
 
-        switch( cameraMode )
+        switch( pictureType )
         {
             case PictureTypes.Freeze:
                 {
                     List<Enemy> frozenEnemies = new List<Enemy>();
 
-                    for ( int i = 0; i < GameManager.instance.enemies.Count; i++ )
+                    List<Enemy> enemies = LevelManager.instance.GetEnemies();
+
+                    for ( int i = 0; i < enemies.Count; i++ )
                     {
-                        Vector3 ToEnemyDir = ( GameManager.instance.enemies[i].transform.position - FPSCamera.transform.position ).normalized;
-
-                        Ray ray = new Ray( FPSCamera.transform.position, ToEnemyDir );
-
-                        RaycastHit raycastHit;
-
-                        if ( Physics.Raycast( ray, out raycastHit, MaxPauseDistance ) )
+                        if ( IsInSightOfCamera( enemies[i].transform, "Enemy" ) )
                         {
-                            if ( raycastHit.transform.CompareTag( "Enemy" ) && 
-                                 1 - Vector3.Dot( FPSCamera.transform.forward.normalized, ToEnemyDir ) <= CameraPauseCone )
-                            {
-                                frozenEnemies.Add( GameManager.instance.enemies[i] );
-                            }
+                            frozenEnemies.Add( enemies[i] );
                         }
                     }
 
                     picture.frozenEnemies = frozenEnemies.ToArray();
                 }
                 break;
+
+            case PictureTypes.Capture:
+                {
+                    List<GameObject> capturedGameObjects = new List<GameObject>();
+
+                    for ( int i = 0; i < LevelManager.instance.Crystals.Length; i++ )
+                    {
+                        if ( LevelManager.instance.Crystals[i].gameObject.activeSelf == false ) return;
+
+                        Debug.Log( IsInSightOfCamera( LevelManager.instance.Crystals[i].transform, "Crystal" ) );
+
+                        if ( IsInSightOfCamera( LevelManager.instance.Crystals[i].transform, "Crystal" ) )
+                        {
+                            capturedGameObjects.Add( LevelManager.instance.Crystals[i].gameObject );
+                            LevelManager.instance.Crystals[i].gameObject.SetActive( false );
+                        }
+                    }
+
+                    picture.capturedGameObjects = capturedGameObjects.ToArray();
+                }
+                break;
         }
 
-        for ( int i = 0; i < PictureSlots.Length; i++ )
+        for ( int i = 0; i < playerUI.PictureSlots.Length; i++ )
         {
             if ( pictures[i] == null )
             {
@@ -157,25 +163,79 @@ public class SpecialCamera : MonoBehaviour
         }
 
         UpdatePictureSlots();
-        UpdatePausedEnemies();
+
+        switch( pictureType )
+        {
+            case PictureTypes.Freeze:
+                {
+                    UpdateFrozenEnemies();
+                }
+                break;
+            case PictureTypes.Capture:
+                {
+                    UpdateFrozenEnemies();
+                }
+                break;
+        }
     }
 
     private void DeletePicture()
     {
-        pictures[pictureSelection] = null;
+        PictureTypes pictureType = pictures[pictureSelection].type;
 
-        UpdatePictureSlots();
-        UpdatePausedEnemies();
-    }
-
-    private void UpdatePausedEnemies()
-    {
-        for ( int i = 0; i < GameManager.instance.enemies.Count; i++ )
+        if ( pictureType == PictureTypes.Capture )
         {
-            GameManager.instance.enemies[i].enabled = true;
+            /*for ( int i = 0; i < pictures[pictureSelection].capturedGameObjects.Length; i++ )
+            {
+                if ( pictures[pictureSelection].capturedGameObjects[i].CompareTag( "Crystal" ) )
+                {
+                    RaycastHit hit;
+
+                    if ( Physics.Raycast( FPSCamera.transform.position, FPSCamera.transform.parent.forward, out hit, 100 ) )
+                    {
+
+                    }
+                }
+            }*/
         }
 
-        for ( int i = 0; i < PictureSlots.Length; i++ )
+        pictures[pictureSelection] = null;
+        UpdatePictureSlots();
+
+        if ( pictureType == PictureTypes.Freeze )
+            UpdateFrozenEnemies();
+    }
+
+    private bool IsInSightOfCamera( Transform target, string targetTag )
+    {
+        Vector3 ToTargetDir = ( target.position - FPSCamera.transform.position ).normalized;
+
+        Ray ray = new Ray( FPSCamera.transform.position, ToTargetDir );
+
+        RaycastHit raycastHit;
+
+        if ( Physics.Raycast( ray, out raycastHit, MaxPauseDistance ) )
+        {
+            if ( raycastHit.transform.CompareTag( targetTag ) &&
+                 1 - Vector3.Dot( FPSCamera.transform.forward.normalized, ToTargetDir ) <= CameraSightCone )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void UpdateFrozenEnemies()
+    {
+        List<Enemy> enemies = LevelManager.instance.GetEnemies();
+
+        for ( int i = 0; i < enemies.Count; i++ )
+        {
+            enemies[i].enabled = true;
+        }
+
+        for ( int i = 0; i < playerUI.PictureSlots.Length; i++ )
         {
             if ( pictures[i] == null || pictures[i].type != PictureTypes.Freeze ) continue;
 
@@ -192,31 +252,19 @@ public class SpecialCamera : MonoBehaviour
         {
             if ( pictures[i] != null )
             {
-                PictureSlots[i].texture = pictures[i].texture;
-                PictureTypeTexts[i].text = pictures[i].type.ToString();
+                playerUI.PictureSlots[i].texture = pictures[i].texture;
+                playerUI.PictureTypeTexts[i].text = pictures[i].type.ToString();
             }
             else
             {
-                PictureSlots[i].texture = null;
-                PictureTypeTexts[i].text = "";
+                playerUI.PictureSlots[i].texture = null;
+                playerUI.PictureTypeTexts[i].text = "";
             }
         }
     }
 
     private void UpdateSelectionOutline()
     {
-        SelectionOutline.anchoredPosition = new Vector2( PictureSlots[pictureSelection].rectTransform.anchoredPosition.x, SelectionOutline.anchoredPosition.y );
-    }
-
-    private void SwitchCameraMode( PictureTypes mode )
-    {
-        cameraMode = mode;
-
-        UpdateCameraModeText();
-    }
-
-    private void UpdateCameraModeText()
-    {
-        CameraModeText.text = "Mode: " + cameraMode.ToString();
+        playerUI.SelectionOutline.anchoredPosition = new Vector2( playerUI.PictureSlots[pictureSelection].rectTransform.anchoredPosition.x, playerUI.SelectionOutline.anchoredPosition.y );
     }
 }

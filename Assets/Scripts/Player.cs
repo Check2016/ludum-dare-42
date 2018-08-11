@@ -8,8 +8,9 @@ public class Player : MonoBehaviour
 {
     private const int MaxHealth = 100;
 
-    public Image HealthBar;
-    public TextMeshProUGUI HealthText;
+    public PlayerUI playerUI;
+
+    [Space]
     public Gradient HealthBarColorGradient;
 
     private int health = MaxHealth;
@@ -22,11 +23,18 @@ public class Player : MonoBehaviour
     public void Damage( int damage )
     {
         health -= damage;
+
+        if ( health < 0 )
+            health = 0;
+
+        UpdateHealthBar();
     }
 
     private void UpdateHealthBar()
     {
-        HealthBar.fillAmount = ( float )health / ( float )MaxHealth;
-        HealthBar.color = HealthBarColorGradient.Evaluate( HealthBar.fillAmount );
+        playerUI.HealthBar.fillAmount = ( float )health / ( float )MaxHealth;
+        playerUI.HealthBar.color = HealthBarColorGradient.Evaluate( playerUI.HealthBar.fillAmount );
+
+        playerUI.HealthText.text = health.ToString();
     }
 }

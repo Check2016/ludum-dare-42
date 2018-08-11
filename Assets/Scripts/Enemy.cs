@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour {
 
-    private const int Damage = 10;
-    private const float DamageRadius = 1;
+    private const int Damage = 20;
+    private const float DamageRadius = 1.75f;
     private const float DamageCooldownTime = 1;
 
     public Player Target;

@@ -8,6 +8,7 @@ public class Picture {
     public PictureTypes type;
 
     public Enemy[] frozenEnemies;
+    public GameObject[] capturedGameObjects;
 
     public Picture( Texture2D texture2D, PictureTypes pictureType )
     {
