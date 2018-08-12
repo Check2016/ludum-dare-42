@@ -8,8 +8,6 @@ public class CrystalDock : MonoBehaviour {
 
     public Crystal Target;
 
-    private bool docked = true;
-
     private void OnTriggerEnter( Collider other )
     {
         if ( other.gameObject == Target.gameObject )

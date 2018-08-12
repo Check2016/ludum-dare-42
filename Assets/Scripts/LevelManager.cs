@@ -87,21 +87,45 @@ public class LevelManager : MonoBehaviour
 
                 for ( int i = 0; i < EnemySpawnPoints.Length; i++ )
                 {
-                    float distance = Vector3.Distance( EnemySpawnPoints[i].position, player.transform.position );
+                    bool visible = false;
 
-                    if ( index == -1 || distance < smallestDistance )
+                    Vector3 ToTargetDir = ( EnemySpawnPoints[i].position - player.specialCamera.FPSCamera.transform.position ).normalized;
+
+                    RaycastHit raycastHit;
+
+                    if ( Physics.Raycast( player.specialCamera.FPSCamera.transform.position, ToTargetDir, out raycastHit, 1000, 1 << 0 ) )
                     {
-                        index = i;
-                        smallestDistance = distance;
+                        if ( raycastHit.transform == EnemySpawnPoints[i] )
+                        {
+                            visible = true;
+                        }
+                    }
+
+                    if ( visible == false )
+                    {
+                        float distance = Vector3.Distance( EnemySpawnPoints[i].position, player.transform.position );
+
+                        if ( index == -1 || distance < smallestDistance )
+                        {
+                            index = i;
+                            smallestDistance = distance;
+                        }
                     }
                 }
 
-                Enemy enemy = Instantiate( EnemyPrefab, EnemySpawnPoints[index].position, EnemySpawnPoints[index].rotation ).GetComponent<Enemy>();
-                enemy.Target = player;
+                if ( index > -1 )
+                {
+                    Enemy enemy = Instantiate( EnemyPrefab, EnemySpawnPoints[index].position, EnemySpawnPoints[index].rotation ).GetComponent<Enemy>();
+                    enemy.Target = player;
 
-                enemies.Add( enemy );
+                    enemies.Add( enemy );
 
-                yield return new WaitForSeconds( Random.Range( MinEnemySpawnDelay, MaxEnemySpawnDelay ) );
+                    yield return new WaitForSeconds( Random.Range( MinEnemySpawnDelay, MaxEnemySpawnDelay ) );
+                }
+                else
+                {
+                    yield return new WaitForSeconds( 0.1f );
+                }
             }
             else
             {

@@ -702,7 +702,7 @@ MonoBehaviour:
   m_CanMove: 1
   m_IsWalking: 0
   m_WalkSpeed: 5
-  m_RunSpeed: 10
+  m_RunSpeed: 8.5
   m_RunstepLenghten: 0.7
   m_JumpSpeed: 10
   m_StickToGroundForce: 10
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_FovKick:
     Camera: {fileID: 20782568195318094}
     originalFov: 0
-    FOVIncrease: 15
+    FOVIncrease: 10
     TimeToIncrease: 0.5
     TimeToDecrease: 2
     IncreaseCurve:
