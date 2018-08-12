@@ -15,9 +15,7 @@ public class MainMenu : MonoBehaviour {
 #endif
 
         if ( PlayerPrefs.GetInt( TutorialSeenOnceKey, 0 ) == 0 )
-        {
             StartCoroutine( ShowTutorial() );
-        }
     }
 
     public void OpenTutorial()
