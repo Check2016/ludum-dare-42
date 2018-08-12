@@ -175,13 +175,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 152554140}
-  m_LocalRotation: {x: -0, y: 0.12857234, z: -0, w: 0.9917001}
+  m_LocalRotation: {x: -0, y: 0.223294, z: -0, w: 0.9747512}
   m_LocalPosition: {x: -19.81, y: 1.45, z: -20.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 14.774001, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 25.805, z: 0}
 --- !u!1 &186969872
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,8 +434,8 @@ GameObject:
   m_Name: Cube (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 40
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &419779084
 Transform:
@@ -444,8 +444,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 419779083}
   m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: -9.5911, y: 0.66, z: -16.68}
-  m_LocalScale: {x: 3.868357, y: 3.3190048, z: 7.7322226}
+  m_LocalPosition: {x: -9.5911, y: 1.36, z: -16.68}
+  m_LocalScale: {x: 3.868357, y: 4.393698, z: 7.7322226}
   m_Children: []
   m_Father: {fileID: 1936718526}
   m_RootOrder: 16
@@ -821,8 +821,8 @@ GameObject:
   m_Name: Cube (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 40
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &862230752
 Transform:
@@ -831,8 +831,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 862230751}
   m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: -21.4444, y: 1.07, z: -7.81}
-  m_LocalScale: {x: 3.8683617, y: 3.691735, z: 7.5446477}
+  m_LocalPosition: {x: -21.4444, y: 1.85, z: -7.81}
+  m_LocalScale: {x: 3.8683617, y: 4.6545396, z: 7.5446477}
   m_Children: []
   m_Father: {fileID: 1936718526}
   m_RootOrder: 17
@@ -1130,6 +1130,11 @@ Prefab:
       propertyPath: CrystalDocks.Array.data[0]
       value: 
       objectReference: {fileID: 1006160150}
+    - target: {fileID: 114945778517173308, guid: e01ccfe3c5c4627469b7fc4aae806ac6,
+        type: 2}
+      propertyPath: MaxEnemyCount
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e01ccfe3c5c4627469b7fc4aae806ac6, type: 2}
   m_IsPrefabAsset: 0

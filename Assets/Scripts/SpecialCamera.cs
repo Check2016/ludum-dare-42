@@ -133,7 +133,7 @@ public class SpecialCamera : MonoBehaviour
 
                     for ( int i = 0; i < enemies.Count; i++ )
                     {
-                        if ( IsInSightOfCamera( enemies[i].transform ) )
+                        if ( enemies[i].enabled && IsInSightOfCamera( enemies[i].transform ) )
                         {
                             frozenEnemies.Add( enemies[i] );
                         }
@@ -271,7 +271,7 @@ public class SpecialCamera : MonoBehaviour
             enemies[i].enabled = true;
         }
 
-        for ( int i = 0; i < playerUI.PictureSlots.Length; i++ )
+        for ( int i = 0; i < pictures.Length; i++ )
         {
             if ( pictures[i] == null || pictures[i].type != PictureTypes.Freeze ) continue;
 

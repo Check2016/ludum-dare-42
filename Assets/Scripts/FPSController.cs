@@ -85,6 +85,8 @@ public class FPSController : MonoBehaviour
 
     private void PlayLandingSound()
     {
+        if ( m_LandSound == null ) return;
+
         m_AudioSource.clip = m_LandSound;
         m_AudioSource.Play();
         m_NextStep = m_StepCycle + .5f;
@@ -144,6 +146,8 @@ public class FPSController : MonoBehaviour
 
     private void PlayJumpSound()
     {
+        if ( m_JumpSound == null ) return;
+
         m_AudioSource.clip = m_JumpSound;
         m_AudioSource.Play();
     }
@@ -170,7 +174,7 @@ public class FPSController : MonoBehaviour
 
     private void PlayFootStepAudio()
     {
-        if ( !m_CharacterController.isGrounded )
+        if ( !m_CharacterController.isGrounded || m_FootstepSounds.Length == 0 )
         {
             return;
         }

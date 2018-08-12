@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1343419392383186}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.5998077, y: 1.37, z: 0.84947777}
+  m_LocalPosition: {x: -17.458794, y: 0.5, z: -15.62918}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -109,6 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f15b2c04cc2e2974c93f95942a2b2aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnabledMaterial: {fileID: 2100000, guid: 251424117fcfcfb418f784181d78ee35, type: 2}
+  DisablesMaterial: {fileID: 2100000, guid: f6f5bb52bf0034f4886108791ab1f00e, type: 2}
   Target: {fileID: 0}
 --- !u!195 &195589027182656918
 NavMeshAgent:

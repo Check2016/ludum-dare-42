@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     private const float MinEnemySpawnDelay = 0.5f;
     private const float MaxEnemySpawnDelay = 1;
+    private const float MinEnemyLifetime = 10;
     private const float EnemyDespawnDistance = 20;
 
     private const float FinishLightRaysTime = 1.5f;
@@ -75,7 +76,7 @@ public class LevelManager : MonoBehaviour
         {
             for ( int i = 0; i < enemies.Count; i++ )
             {
-                if ( enemies[i].enabled && Vector3.Distance( enemies[i].transform.position, player.transform.position ) > EnemyDespawnDistance )
+                if ( enemies[i].enabled && Time.time - enemies[i].SpawnTime >= MinEnemyLifetime && Vector3.Distance( enemies[i].transform.position, player.transform.position ) > EnemyDespawnDistance )
                 {
                     MeshRenderer meshRenderer = enemies[i].GetComponent<MeshRenderer>();
 
@@ -87,10 +88,37 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
-            if ( enemies.Count < MaxEnemyCount )
+            int Max = MaxEnemyCount;
+
+            int frozenEnemies = 0;
+
+            Picture[] pictures = player.specialCamera.GetPictures();
+
+            if ( pictures != null )
+            {
+                for ( int i = 0; i < pictures.Length; i++ )
+                {
+                    if ( pictures[i] != null && pictures[i].type == PictureTypes.Freeze )
+                    {
+                        frozenEnemies += pictures[i].frozenEnemies.Length;
+                    }
+                }
+
+                if ( enemies.Count > Max )
+                {
+                    Max = enemies.Count;
+                }
+
+                if ( frozenEnemies == enemies.Count )
+                {
+                    Max++;
+                }
+            }
+
+            if ( enemies.Count < Max )
             {
                 int index = -1;
-                float smallestDistance = 0;
+                float smallestDistance = Mathf.Infinity;
 
                 for ( int i = 0; i < EnemySpawnPoints.Length; i++ )
                 {

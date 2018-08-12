@@ -9,24 +9,35 @@ public class Enemy : MonoBehaviour {
     private const float DamageRadius = 1.75f;
     private const float DamageCooldownTime = 1;
 
+    public Material EnabledMaterial;
+    public Material DisablesMaterial;
     public Player Target;
+
+    [HideInInspector]
+    public float SpawnTime = 0;
 
     private NavMeshAgent navMeshAgent;
     private float lastDamageTime = -DamageCooldownTime;
 
     private void Awake()
     {
+        SpawnTime = Time.time;
+
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     private void OnEnable ()
     {
         navMeshAgent.enabled = true;
+
+        GetComponent<MeshRenderer>().sharedMaterial = EnabledMaterial;
     }
 
     private void OnDisable()
     {
         navMeshAgent.enabled = false;
+
+        GetComponent<MeshRenderer>().sharedMaterial = DisablesMaterial;
     }
 
     private void Update ()
