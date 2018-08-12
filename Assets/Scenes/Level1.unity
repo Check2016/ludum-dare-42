@@ -1119,7 +1119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6e5c482f4e2a7a41a88cdb22ed0f70c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxEnemyCount: 0
+  MaxEnemyCount: 10
   PlayerPrefab: {fileID: 1147070484331656, guid: 6bd577d9f812b37468997253298b5fcb,
     type: 2}
   PlayerUIPrefab: {fileID: 1253523911238862, guid: 4a45746cfe9d2de40b2fbf176d0a7bf1,
@@ -1139,6 +1139,8 @@ MonoBehaviour:
   SupernovaPrefab: {fileID: 1732821853500302, guid: 1da0ea7b4826dd843ac3ba5322f25b72,
     type: 2}
   WinCanvasPrefab: {fileID: 1849977679031256, guid: 5936b696377e33847ab0b7786357b434,
+    type: 2}
+  GameOverCanvasPrefab: {fileID: 1701518551818320, guid: ca0e85b59c2714b44b58fede827d39b1,
     type: 2}
 --- !u!1 &2048794657
 GameObject:

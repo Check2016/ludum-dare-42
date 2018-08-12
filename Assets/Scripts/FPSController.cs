@@ -14,6 +14,7 @@ public class FPSController : MonoBehaviour
     [SerializeField] [Range( 0f, 1f )] private float m_RunstepLenghten;
     [SerializeField] private float m_JumpSpeed;
     [SerializeField] private float m_StickToGroundForce;
+    [SerializeField] private bool m_UseGravity = true;
     [SerializeField] private float m_GravityMultiplier;
     [SerializeField] private UnityStandardAssets.Characters.FirstPerson.MouseLook m_MouseLook;
     [SerializeField] private bool m_UseFovKick;
@@ -120,15 +121,22 @@ public class FPSController : MonoBehaviour
                     m_Jumping = true;
                 }
             }
-            else
-            {
-                m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
-            }
-            m_CollisionFlags = m_CharacterController.Move( m_MoveDir * Time.fixedDeltaTime );
 
             ProgressStepCycle( speed );
             UpdateCameraPosition( speed );
         }
+        else
+        {
+            m_MoveDir = Vector3.zero;
+        }
+
+        if ( m_CharacterController.isGrounded == false && m_UseGravity )
+        {
+            m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
+        }
+
+        if ( m_CanMove || m_UseGravity )
+            m_CollisionFlags = m_CharacterController.Move( m_MoveDir * Time.fixedDeltaTime );
 
         m_MouseLook.UpdateCursorLock();
     }
@@ -264,5 +272,10 @@ public class FPSController : MonoBehaviour
         {
             StopAllCoroutines();
         }
+    }
+
+    public void SetUseGravity( bool value )
+    {
+        m_UseGravity = value;
     }
 }

@@ -91,7 +91,7 @@ public class SpecialCamera : MonoBehaviour
 
         transform.localPosition += new Vector3( mouseX, mouseY, 0 ) * SwayAmount;
 
-        transform.localPosition = Vector3.Lerp( transform.localPosition, startPosition, Time.deltaTime * SwaySpeed );
+        transform.localPosition = Vector3.Lerp( transform.localPosition, startPosition, Time.fixedDeltaTime * SwaySpeed );
     }
 
     private void TakePicture( PictureTypes pictureType )

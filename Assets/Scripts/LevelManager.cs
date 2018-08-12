@@ -31,12 +31,14 @@ public class LevelManager : MonoBehaviour
     public GameObject LightRayPrefab;
     public GameObject SupernovaPrefab;
     public GameObject WinCanvasPrefab;
+    public GameObject GameOverCanvasPrefab;
 
     private List<Enemy> enemies = new List<Enemy>();
     private Player player;
     private PlayerUI playerUI;
 
     private Coroutine spawnEnemiesCoroutine;
+    private bool gameOver = false;
 
     public static LevelManager instance;
 
@@ -182,6 +184,8 @@ public class LevelManager : MonoBehaviour
 
         yield return new WaitForSeconds( 0.5f );
 
+        player.GetComponent<FPSController>().SetUseGravity( false );
+
         StartCoroutine( InstantiateWinCanvas( FinishFloatUpTime * 0.75f ) );
 
         t = 0;
@@ -207,6 +211,26 @@ public class LevelManager : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void GameOver()
+    {
+        if ( gameOver ) return;
+
+        gameOver = true;
+
+        player.enabled = false;
+        player.specialCamera.enabled = false;
+        player.GetComponent<FPSController>().SetCanMove( false );
+
+        StopCoroutine( spawnEnemiesCoroutine );
+
+        for ( int i = 0; i < enemies.Count; i++ )
+        {
+            enemies[i].enabled = false;
+        }
+
+        Instantiate( GameOverCanvasPrefab );
     }
 
     private IEnumerator InstantiateWinCanvas( float delay )
