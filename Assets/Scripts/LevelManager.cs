@@ -8,9 +8,8 @@ public class LevelManager : MonoBehaviour
     private const float MaxEnemySpawnDelay = 2;
     private const float EnemyDespawnDistance = 20;
 
-    private const float FinishLightRaysTime = 2;
-    private const float FinishLightRaysPlayerYOffset = -1;
-    private const float FinishLightRaysPlayerRadius = 1;
+    private const float FinishLightRaysTime = 1.5f;
+    private const float FinishLightRaysPlayerYOffset = -0.8f;
     private const float FinishFloatUpHeight = 60;
     private const float FinishFloatUpTime = 6;
 
@@ -30,6 +29,7 @@ public class LevelManager : MonoBehaviour
 
     [Space]
     public GameObject LightRayPrefab;
+    public GameObject SupernovaPrefab;
     public GameObject WinCanvasPrefab;
 
     private List<Enemy> enemies = new List<Enemy>();
@@ -147,6 +147,14 @@ public class LevelManager : MonoBehaviour
             lightRays[i].positionCount = 2;
         }
 
+        GameObject supernova = Instantiate( SupernovaPrefab );
+        supernova.transform.position = player.transform.position + SupernovaPrefab.transform.position;
+
+        MeshRenderer supernovaMeshRenderer = supernova.GetComponent<MeshRenderer>();
+        supernovaMeshRenderer.sharedMaterial = new Material( supernovaMeshRenderer.sharedMaterial );
+        Color supernovaColor = supernovaMeshRenderer.sharedMaterial.GetColor( "_TintColor" );
+        supernovaMeshRenderer.sharedMaterial.SetColor( "_TintColor", new Color( supernovaColor.r, supernovaColor.g, supernovaColor.b, 0 ) );
+
         float t = 0;
 
         while ( t < 1 )
@@ -157,11 +165,16 @@ public class LevelManager : MonoBehaviour
 
             for ( int i = 0; i < Crystals.Length; i++ )
             {
-                Vector3 lightTarget = player.transform.position + Vector3.up * FinishLightRaysPlayerYOffset + ( Crystals[i].Mesh.transform.position - player.transform.position ).normalized * FinishLightRaysPlayerRadius;
+                Vector3 lightTarget = player.transform.position + Vector3.up * FinishLightRaysPlayerYOffset;
 
                 lightRays[i].SetPositions( new Vector3[] { Crystals[i].Mesh.transform.position,
                                                            Vector3.Lerp( Crystals[i].Mesh.transform.position, lightTarget, t_pow )
                 } );
+            }
+
+            if ( t >= 0.95f )
+            {
+                supernovaMeshRenderer.sharedMaterial.SetColor( "_TintColor", new Color( supernovaColor.r, supernovaColor.g, supernovaColor.b, ( t - 0.95f ) / 0.05f ) );
             }
 
             yield return null;
@@ -182,7 +195,7 @@ public class LevelManager : MonoBehaviour
 
             for ( int i = 0; i < Crystals.Length; i++ )
             {
-                Vector3 lightTarget = player.transform.position + Vector3.up * FinishLightRaysPlayerYOffset + ( Crystals[i].Mesh.transform.position - player.transform.position ).normalized * FinishLightRaysPlayerRadius;
+                Vector3 lightTarget = player.transform.position + Vector3.up * FinishLightRaysPlayerYOffset;
 
                 lightRays[i].SetPositions( new Vector3[] { Crystals[i].Mesh.transform.position,
                                                            lightTarget
@@ -190,6 +203,7 @@ public class LevelManager : MonoBehaviour
             }
 
             player.transform.position = Vector3.Lerp( startPos, targetPos, Mathf.Pow( t, 3.0f ) );
+            supernova.transform.position = player.transform.position + SupernovaPrefab.transform.position;
 
             yield return null;
         }

@@ -1136,6 +1136,8 @@ MonoBehaviour:
   - {fileID: 792485379}
   LightRayPrefab: {fileID: 1364224781007886, guid: a51b10833b503ee4db139969e9761b11,
     type: 2}
+  SupernovaPrefab: {fileID: 1732821853500302, guid: 1da0ea7b4826dd843ac3ba5322f25b72,
+    type: 2}
   WinCanvasPrefab: {fileID: 1849977679031256, guid: 5936b696377e33847ab0b7786357b434,
     type: 2}
 --- !u!1 &2048794657
