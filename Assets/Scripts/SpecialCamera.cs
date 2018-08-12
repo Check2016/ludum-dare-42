@@ -133,7 +133,7 @@ public class SpecialCamera : MonoBehaviour
 
                     for ( int i = 0; i < enemies.Count; i++ )
                     {
-                        if ( IsInSightOfCamera( enemies[i].transform, "Enemy" ) )
+                        if ( IsInSightOfCamera( enemies[i].transform ) )
                         {
                             frozenEnemies.Add( enemies[i] );
                         }
@@ -159,7 +159,7 @@ public class SpecialCamera : MonoBehaviour
                     {
                         if ( LevelManager.instance.Crystals[i].gameObject.activeSelf == false ) continue;
 
-                        if ( IsInSightOfCamera( LevelManager.instance.Crystals[i].transform, "Crystal" ) )
+                        if ( IsInSightOfCamera( LevelManager.instance.Crystals[i].transform ) )
                         {
                             float distance = Vector3.Distance( LevelManager.instance.Crystals[i].transform.position, player.transform.position );
 
@@ -237,7 +237,7 @@ public class SpecialCamera : MonoBehaviour
             UpdateFrozenEnemies();
     }
 
-    private bool IsInSightOfCamera( Transform target, string targetTag )
+    private bool IsInSightOfCamera( Transform target )
     {
         Vector3 ToTargetDir = ( target.position - FPSCamera.transform.position ).normalized;
 
@@ -247,8 +247,7 @@ public class SpecialCamera : MonoBehaviour
 
         if ( Physics.Raycast( ray, out raycastHit, MaxPauseDistance ) )
         {
-            if ( raycastHit.transform.CompareTag( targetTag ) &&
-                 1 - Vector3.Dot( FPSCamera.transform.forward.normalized, ToTargetDir ) <= CameraSightCone )
+            if ( raycastHit.transform == target && 1 - Vector3.Dot( FPSCamera.transform.forward.normalized, ToTargetDir ) <= CameraSightCone )
             {
                 return true;
             }
