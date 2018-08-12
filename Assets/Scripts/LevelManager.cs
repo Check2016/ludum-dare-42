@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     private const float MinEnemySpawnDelay = 0.5f;
-    private const float MaxEnemySpawnDelay = 2;
+    private const float MaxEnemySpawnDelay = 1;
     private const float EnemyDespawnDistance = 20;
 
     private const float FinishLightRaysTime = 1.5f;
@@ -150,7 +150,6 @@ public class LevelManager : MonoBehaviour
         }
 
         GameObject supernova = Instantiate( SupernovaPrefab );
-        supernova.transform.position = player.transform.position + SupernovaPrefab.transform.position;
 
         MeshRenderer supernovaMeshRenderer = supernova.GetComponent<MeshRenderer>();
         supernovaMeshRenderer.sharedMaterial = new Material( supernovaMeshRenderer.sharedMaterial );
@@ -174,6 +173,8 @@ public class LevelManager : MonoBehaviour
                 } );
             }
 
+            supernova.transform.position = player.transform.position + SupernovaPrefab.transform.position;
+
             if ( t >= 0.95f )
             {
                 supernovaMeshRenderer.sharedMaterial.SetColor( "_TintColor", new Color( supernovaColor.r, supernovaColor.g, supernovaColor.b, ( t - 0.95f ) / 0.05f ) );
@@ -182,9 +183,9 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds( 0.5f );
-
         player.GetComponent<FPSController>().SetUseGravity( false );
+
+        yield return new WaitForSeconds( 0.5f );
 
         StartCoroutine( InstantiateWinCanvas( FinishFloatUpTime * 0.75f ) );
 

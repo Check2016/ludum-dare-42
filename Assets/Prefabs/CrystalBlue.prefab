@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 114962437064379630}
   - component: {fileID: 54586865093034640}
   - component: {fileID: 136262936366957240}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CrystalBlue
   m_TagString: Crystal
   m_Icon: {fileID: 0}

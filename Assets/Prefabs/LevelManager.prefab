@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1437962579934178}
+  m_IsPrefabAsset: 1
+--- !u!1 &1437962579934178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4326763000231642}
+  - component: {fileID: 114945778517173308}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4326763000231642
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1437962579934178}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114945778517173308
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1437962579934178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6e5c482f4e2a7a41a88cdb22ed0f70c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxEnemyCount: 0
+  PlayerPrefab: {fileID: 1147070484331656, guid: 6bd577d9f812b37468997253298b5fcb,
+    type: 2}
+  PlayerUIPrefab: {fileID: 1253523911238862, guid: 4a45746cfe9d2de40b2fbf176d0a7bf1,
+    type: 2}
+  PlayerSpawnPoint: {fileID: 0}
+  EnemyPrefab: {fileID: 1343419392383186, guid: 94615fbac861007429a06242f9f22561,
+    type: 2}
+  EnemySpawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  Crystals:
+  - {fileID: 0}
+  - {fileID: 0}
+  LightRayPrefab: {fileID: 1364224781007886, guid: a51b10833b503ee4db139969e9761b11,
+    type: 2}
+  SupernovaPrefab: {fileID: 1732821853500302, guid: 1da0ea7b4826dd843ac3ba5322f25b72,
+    type: 2}
+  WinCanvasPrefab: {fileID: 1849977679031256, guid: 5936b696377e33847ab0b7786357b434,
+    type: 2}
+  GameOverCanvasPrefab: {fileID: 1701518551818320, guid: ca0e85b59c2714b44b58fede827d39b1,
+    type: 2}

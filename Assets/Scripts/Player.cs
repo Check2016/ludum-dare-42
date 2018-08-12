@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     [Space]
     public Gradient HealthBarColorGradient;
 
+    [Space]
+    public GameObject CrystalHUDPrefab;
+
     private int health = MaxHealth;
 
     private Coroutine animateDamageOverlayCoroutine;
@@ -23,6 +26,12 @@ public class Player : MonoBehaviour
     private void Start()
     {
         UpdateHealthBar();
+
+        for ( int i = 0; i < LevelManager.instance.Crystals.Length; i++ )
+        {
+            CrystalHUD crystalHUD = Instantiate( CrystalHUDPrefab, playerUI.transform ).GetComponent<CrystalHUD>();
+            crystalHUD.Setup( playerUI.GetComponent<RectTransform>(), specialCamera.FPSCamera.transform, LevelManager.instance.Crystals[i] );
+        }
     }
 
     public void Damage( int damage )

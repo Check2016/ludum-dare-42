@@ -226,7 +226,7 @@ public class SpecialCamera : MonoBehaviour
             {
                 pictures[pictureSelection].capturedGameObject.transform.position = player.transform.position + player.transform.forward * CrystalReleaseDistance;
                 pictures[pictureSelection].capturedGameObject.SetActive( true );
-                pictures[pictureSelection].capturedGameObject.GetComponent<Rigidbody>().AddForce( player.transform.forward * CrystalReleaseForce, ForceMode.Impulse );
+                pictures[pictureSelection].capturedGameObject.GetComponent<Rigidbody>().AddForce( player.transform.forward * CrystalReleaseForce + player.GetComponent<CharacterController>().velocity, ForceMode.Impulse );
             }
         }
 
@@ -241,17 +241,23 @@ public class SpecialCamera : MonoBehaviour
     {
         Vector3 ToTargetDir = ( target.position - FPSCamera.transform.position ).normalized;
 
+        target.gameObject.layer = 0;
+
         Ray ray = new Ray( FPSCamera.transform.position, ToTargetDir );
 
         RaycastHit raycastHit;
 
-        if ( Physics.Raycast( ray, out raycastHit, MaxPauseDistance ) )
+        if ( Physics.Raycast( ray, out raycastHit, MaxPauseDistance, 1 << 0 ) )
         {
+            target.gameObject.layer = 8;
+
             if ( raycastHit.transform == target && 1 - Vector3.Dot( FPSCamera.transform.forward.normalized, ToTargetDir ) <= CameraSightCone )
             {
                 return true;
             }
         }
+
+        target.gameObject.layer = 8;
 
         return false;
     }
