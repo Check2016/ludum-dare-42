@@ -15,4 +15,5 @@ public class PlayerUI : MonoBehaviour {
     public Image HealthBar;
     public TextMeshProUGUI HealthText;
     public Image DamageOverlayImage;
+    public Transform HUDParent;
 }

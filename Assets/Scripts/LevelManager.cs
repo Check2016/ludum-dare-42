@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class LevelManager : MonoBehaviour
 
     [Space]
     public Crystal[] Crystals = new Crystal[0];
+    public CrystalDock[] CrystalDocks = new CrystalDock[0];
 
     [Space]
     public GameObject LightRayPrefab;
@@ -33,12 +35,17 @@ public class LevelManager : MonoBehaviour
     public GameObject WinCanvasPrefab;
     public GameObject GameOverCanvasPrefab;
 
+    [Space]
+    public string NextLevel;
+
     private List<Enemy> enemies = new List<Enemy>();
     private Player player;
     private PlayerUI playerUI;
 
     private Coroutine spawnEnemiesCoroutine;
+
     private bool gameOver = false;
+    private bool levelFinished = false;
 
     public static LevelManager instance;
 
@@ -155,8 +162,14 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator LevelFinished()
     {
+        if ( levelFinished ) yield break;
+
+        levelFinished = true;
+
         player.specialCamera.enabled = false;
         player.GetComponent<FPSController>().SetCanMove( false );
+
+        playerUI.HUDParent.gameObject.SetActive( false );
 
         StopCoroutine( spawnEnemiesCoroutine );
 
@@ -164,6 +177,8 @@ public class LevelManager : MonoBehaviour
         {
             enemies[i].enabled = false;
         }
+
+        PlayerPrefs.SetInt( "Unlocked_" + NextLevel, 1 );
 
         LineRenderer[] lightRays = new LineRenderer[Crystals.Length];
 
@@ -255,7 +270,7 @@ public class LevelManager : MonoBehaviour
             enemies[i].enabled = false;
         }
 
-        Instantiate( GameOverCanvasPrefab );
+        StartCoroutine( InstantiateGameOverCanvas() );
     }
 
     private IEnumerator InstantiateWinCanvas( float delay )
@@ -263,6 +278,19 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds( delay );
 
         Instantiate( WinCanvasPrefab );
+
+        yield return new WaitForSeconds( 2.75f );
+
+        player.GetComponent<FPSController>().SetCursorLock( false );
+    }
+
+    private IEnumerator InstantiateGameOverCanvas()
+    {
+        Instantiate( GameOverCanvasPrefab );
+
+        yield return new WaitForSeconds( 2f );
+
+        player.GetComponent<FPSController>().SetCursorLock( false );
     }
 
     public bool IsVisibleFrom( Renderer renderer, Camera camera )
@@ -274,5 +302,25 @@ public class LevelManager : MonoBehaviour
     public List<Enemy> GetEnemies()
     {
         return enemies;
+    }
+
+    public Player GetPlayer()
+    {
+        return player;
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex );
+    }
+
+    public void GotoNextLevel()
+    {
+        SceneManager.LoadScene( NextLevel );
+    }
+
+    public void GotoMainMenu()
+    {
+        SceneManager.LoadScene( "MainMenu" );
     }
 }

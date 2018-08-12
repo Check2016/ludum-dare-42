@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6e5c482f4e2a7a41a88cdb22ed0f70c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxEnemyCount: 0
+  MaxEnemyCount: 10
   PlayerPrefab: {fileID: 1147070484331656, guid: 6bd577d9f812b37468997253298b5fcb,
     type: 2}
   PlayerUIPrefab: {fileID: 1253523911238862, guid: 4a45746cfe9d2de40b2fbf176d0a7bf1,
@@ -63,8 +63,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  Crystals:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  Crystals:
   - {fileID: 0}
   LightRayPrefab: {fileID: 1364224781007886, guid: a51b10833b503ee4db139969e9761b11,
     type: 2}
@@ -74,3 +77,8 @@ MonoBehaviour:
     type: 2}
   GameOverCanvasPrefab: {fileID: 1701518551818320, guid: ca0e85b59c2714b44b58fede827d39b1,
     type: 2}
+  PauseCanvasPrefab: {fileID: 1412001897451908, guid: 7a887526a96dc9344a77c7f0d3f9b4ad,
+    type: 2}
+  TutorialCanvasPrefab: {fileID: 1025026982593014, guid: aa1b394ad66fcc448a64a1585b6018f9,
+    type: 2}
+  NextLevel: 

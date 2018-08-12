@@ -3,21 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CrystalHUD : MonoBehaviour {
+public class HUDImage : MonoBehaviour {
 
     public RectTransform Canvas;
     public Transform FPSCamera;
-    public Crystal Target;
+    public Transform Target;
+    public Transform HUDTarget;
 
     private RectTransform rectTransform;
     private Image image;
 
     private bool targetVisible = true;
 
-    public void Setup( RectTransform canvas, Transform fpsCamera, Crystal target )
+    public void Setup( RectTransform canvas, Transform fpsCamera, Transform target, Color color, Transform hudTarget = null )
     {
         Canvas = canvas;
         Target = target;
+
+        if ( hudTarget == null )
+            HUDTarget = target;
+        else
+            HUDTarget = hudTarget;
+
         FPSCamera = fpsCamera;
 
         rectTransform = GetComponent<RectTransform>();
@@ -26,7 +33,7 @@ public class CrystalHUD : MonoBehaviour {
         float h = 0;
         float s = 0;
         float v = 0;
-        Color.RGBToHSV( target.Mesh.GetComponent<MeshRenderer>().sharedMaterial.color, out h, out s, out v );
+        Color.RGBToHSV( color, out h, out s, out v );;
         image.color = Color.HSVToRGB( h, 0.75f, v );
 
         StartCoroutine( UpdateHUD() );
@@ -47,7 +54,7 @@ public class CrystalHUD : MonoBehaviour {
                 image.enabled = true;
             }
 
-            Vector3 viewportPoint = Camera.main.WorldToViewportPoint( Target.Mesh.position );
+            Vector3 viewportPoint = Camera.main.WorldToViewportPoint( HUDTarget.position );
 
             if ( viewportPoint.z > 0 )
             {

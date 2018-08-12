@@ -857,6 +857,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   CrystalHUDPrefab: {fileID: 1432389797174470, guid: 885a514bed4abf84889ab1804be55153,
     type: 2}
+  CrystalDockHUDPrefab: {fileID: 1196906346127678, guid: 652bc1ebb27583b4386a9a7bdfa16525,
+    type: 2}
 --- !u!114 &114800435653869922
 MonoBehaviour:
   m_ObjectHideFlags: 1

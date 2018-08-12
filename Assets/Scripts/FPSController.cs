@@ -278,4 +278,9 @@ public class FPSController : MonoBehaviour
     {
         m_UseGravity = value;
     }
+
+    public void SetCursorLock( bool value )
+    {
+        m_MouseLook.SetCursorLock( value );
+    }
 }

@@ -1023,9 +1023,19 @@ Prefab:
       propertyPath: m_Size.z
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1376849376070946, guid: c3afb4f9f0eba7147b32a562ba04e1b7, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3afb4f9f0eba7147b32a562ba04e1b7, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &1006160150 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114222507330229994, guid: c3afb4f9f0eba7147b32a562ba04e1b7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1006160149}
+  m_Script: {fileID: 11500000, guid: 7a29f0d7acf4c234e94837273eb5c63d, type: 3}
 --- !u!1001 &1081402394
 Prefab:
   m_ObjectHideFlags: 0
@@ -1035,13 +1045,8 @@ Prefab:
     m_Modifications:
     - target: {fileID: 114945778517173308, guid: e01ccfe3c5c4627469b7fc4aae806ac6,
         type: 2}
-      propertyPath: Crystals.Array.size
+      propertyPath: CrystalDocks.Array.size
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114945778517173308, guid: e01ccfe3c5c4627469b7fc4aae806ac6,
-        type: 2}
-      propertyPath: EnemySpawnPoints.Array.size
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4326763000231642, guid: e01ccfe3c5c4627469b7fc4aae806ac6, type: 2}
       propertyPath: m_LocalPosition.x
@@ -1097,21 +1102,6 @@ Prefab:
       objectReference: {fileID: 1659157979}
     - target: {fileID: 114945778517173308, guid: e01ccfe3c5c4627469b7fc4aae806ac6,
         type: 2}
-      propertyPath: Crystals.Array.data[0]
-      value: 
-      objectReference: {fileID: 760663707}
-    - target: {fileID: 114945778517173308, guid: e01ccfe3c5c4627469b7fc4aae806ac6,
-        type: 2}
-      propertyPath: Crystals.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114945778517173308, guid: e01ccfe3c5c4627469b7fc4aae806ac6,
-        type: 2}
-      propertyPath: MaxEnemyCount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114945778517173308, guid: e01ccfe3c5c4627469b7fc4aae806ac6,
-        type: 2}
       propertyPath: EnemySpawnPoints.Array.data[3]
       value: 
       objectReference: {fileID: 61246701}
@@ -1130,6 +1120,16 @@ Prefab:
       propertyPath: EnemySpawnPoints.Array.data[6]
       value: 
       objectReference: {fileID: 434858767}
+    - target: {fileID: 114945778517173308, guid: e01ccfe3c5c4627469b7fc4aae806ac6,
+        type: 2}
+      propertyPath: Crystals.Array.data[0]
+      value: 
+      objectReference: {fileID: 760663707}
+    - target: {fileID: 114945778517173308, guid: e01ccfe3c5c4627469b7fc4aae806ac6,
+        type: 2}
+      propertyPath: CrystalDocks.Array.data[0]
+      value: 
+      objectReference: {fileID: 1006160150}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e01ccfe3c5c4627469b7fc4aae806ac6, type: 2}
   m_IsPrefabAsset: 0

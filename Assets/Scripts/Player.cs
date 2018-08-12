@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
 
     [Space]
     public GameObject CrystalHUDPrefab;
+    public GameObject CrystalDockHUDPrefab;
 
     private int health = MaxHealth;
 
@@ -29,8 +30,21 @@ public class Player : MonoBehaviour
 
         for ( int i = 0; i < LevelManager.instance.Crystals.Length; i++ )
         {
-            CrystalHUD crystalHUD = Instantiate( CrystalHUDPrefab, playerUI.transform ).GetComponent<CrystalHUD>();
-            crystalHUD.Setup( playerUI.GetComponent<RectTransform>(), specialCamera.FPSCamera.transform, LevelManager.instance.Crystals[i] );
+            HUDImage hudImage = Instantiate( CrystalHUDPrefab, playerUI.HUDParent.transform ).GetComponent<HUDImage>();
+            hudImage.Setup( playerUI.GetComponent<RectTransform>(),
+                specialCamera.FPSCamera.transform, 
+                LevelManager.instance.Crystals[i].transform, 
+                LevelManager.instance.Crystals[i].Mesh.GetComponent<MeshRenderer>().sharedMaterial.color, 
+                LevelManager.instance.Crystals[i].Mesh );
+        }
+
+        for ( int i = 0; i < LevelManager.instance.CrystalDocks.Length; i++ )
+        {
+            HUDImage hudImage = Instantiate( CrystalDockHUDPrefab, playerUI.HUDParent.transform ).GetComponent<HUDImage>();
+            hudImage.Setup( playerUI.GetComponent<RectTransform>(),
+                specialCamera.FPSCamera.transform, 
+                LevelManager.instance.CrystalDocks[i].transform.GetChild( 0 ),
+                LevelManager.instance.Crystals[i].Mesh.GetComponent<MeshRenderer>().sharedMaterial.color );
         }
     }
 

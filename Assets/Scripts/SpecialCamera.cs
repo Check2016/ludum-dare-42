@@ -303,6 +303,11 @@ public class SpecialCamera : MonoBehaviour
         }
     }
 
+    public Picture[] GetPictures()
+    {
+        return pictures;
+    }
+
     private void UpdateSelectionOutline()
     {
         playerUI.SelectionOutline.anchoredPosition = new Vector2( playerUI.PictureSlots[pictureSelection].rectTransform.anchoredPosition.x, playerUI.SelectionOutline.anchoredPosition.y );
