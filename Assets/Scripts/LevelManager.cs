@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     private const float MinEnemySpawnDelay = 0.5f;
-    private const float MaxEnemySpawnDelay = 1;
-    private const float MinEnemyLifetime = 10;
+    private const float MaxEnemySpawnDelay = 1.5f;
+    private const float MinEnemyLifetime = 8;
     private const float EnemyDespawnDistance = 20;
 
     private const float FinishLightRaysTime = 1.5f;
@@ -344,7 +344,14 @@ public class LevelManager : MonoBehaviour
 
     public void GotoNextLevel()
     {
-        SceneManager.LoadScene( NextLevel );
+        if ( NextLevel.Length > 0 )
+        {
+            SceneManager.LoadScene( NextLevel );
+        }
+        else
+        {
+            SceneManager.LoadScene( "MainMenu" );
+        }
     }
 
     public void GotoMainMenu()

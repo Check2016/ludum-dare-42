@@ -17,7 +17,7 @@ public class LevelButton : MonoBehaviour
     {
         if ( Unlockable )
         {
-            if ( PlayerPrefs.GetInt( "Unlocked_" + "Level1", 0 ) == 0 )
+            if ( PlayerPrefs.GetInt( "Unlocked_" + SceneName, 0 ) == 0 )
             {
                 Text.color = Color.white;
                 GetComponent<Button>().interactable = false;

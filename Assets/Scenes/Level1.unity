@@ -1135,6 +1135,11 @@ Prefab:
       propertyPath: MaxEnemyCount
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114945778517173308, guid: e01ccfe3c5c4627469b7fc4aae806ac6,
+        type: 2}
+      propertyPath: NextLevel
+      value: Level2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e01ccfe3c5c4627469b7fc4aae806ac6, type: 2}
   m_IsPrefabAsset: 0
